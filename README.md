@@ -51,7 +51,7 @@ In the following we want to explain how to extend the service to new Knowledge B
    
    - implement getRepository() indicating the address of the SPARQL endpoint with the RDF KB and the corresponding PageRank scores
    
-   - implement getQuery0(), this method returns a query. It retrives for an ENTITY the corresponding label in the language LANG. For Wikidata the query is.
+   - implement getQuery0(), this method returns a query. It retrives for an **ENTITY** the corresponding label in the language **LANG**. For Wikidata the query is.
  
  
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -61,7 +61,7 @@ In the following we want to explain how to extend the service to new Knowledge B
                 FILTER regex(lang(?l), "LANG", "i") . 
             }
   
-  - implement getQuery1(), this method returns a query. It returns the resources connected to the resource ENTITY, order them according to the PageRank score and take the first TOPK. Moreover it retrieves the labels of the founded resources in the language LANG. For Wikidata the query is.
+  - implement getQuery1(), this method returns a query. It returns the resources connected to the resource **ENTITY**, order them according to the PageRank score and take the first **TOPK**. Moreover it retrieves the labels of the founded resources in the language **LANG**. For Wikidata the query is.
   
         PREFIX rdf: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX vrank: <http://purl.org/voc/vrank#> 
@@ -81,7 +81,7 @@ In the following we want to explain how to extend the service to new Knowledge B
         }
         ORDER BY DESC (?pageRank) LIMIT TOPK 
         
-- implement getQuery2(), this method returns a query. It returns, given two resource ENTITY and OBJECT, the label of the property between them in the language LANG. For Wikidata we use the following query:
+  - implement getQuery2(), this method returns a query. It returns, given two resource **ENTITY** and **OBJECT**, the label of the property between them in the language **LANG**. For Wikidata we use the following query:
            
         PREFIX rdf: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX vrank:<http://purl.org/voc/vrank#>
@@ -102,4 +102,11 @@ https://github.com/WDAqua/SummaServer/tree/master/src/main/java/edu/kit/aifb/sum
 
 
 
+
+---
+Copyright © 2014-2017 UJMS. This source code is licensed under the MIT
+license found in the [LICENSE.txt](https://github.com/WDAqua/SummaServer/blob/master/LICENSE)
+file.
+
+Made by Andreas Thalhammer & Dennis Diefenbach
 
