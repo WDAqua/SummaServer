@@ -39,9 +39,9 @@ POST
         
 The response is encoded using the vRank vocabulary described at ?????
 
-## Extending to a new Knowledge Base
+## Extending to a new Knowledge Base (KB)
 
-In the following we want to explain how to extend the service to new Knowledge Bases.
+In the following we want to explain how to extend the service to new Knowledge Bases. As a running example we use the conrete case of the Wikidata KB.
 
 - You need to set up a triplestore containing the KB together with the PageRank scores expressed in the vRank vocabulary. The PageRank scores can be computed using the command line tool [PageRankRDF]{https://github.com/WDAqua/PageRankRDF}. We generally relay on SPARQL endpoints over HDT files like describe [here](https://github.com/rdfhdt/hdt-java/tree/master/hdt-fuseki).
 
@@ -51,9 +51,49 @@ In the following we want to explain how to extend the service to new Knowledge B
    
    - implement getRepository() indicating the address of the SPARQL endpoint with the RDF KB and the corresponding PageRank scores
    
-   - implement getQuery0(), 
-   
-!!!!!!!!!!!!!!!!!!!!!!!
+   - implement getQuery0(), this method returns a query. It retrives for an ENTITY the corresponding label in the language LANG. For Wikidata the query is.
+ 
+ 
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            SELECT DISTINCT ?l
+            WHERE {
+                <ENTITY> rdfs:label ?l . 
+                FILTER regex(lang(?l), "LANG", "i") . 
+            }
+  
+  - implement getQuery1(), this method returns a query. It returns the resources connected to the resource ENTITY, order them according to the PageRank score and take the first TOPK. Moreover it retrieves the labels of the founded resources in the language LANG. For Wikidata the query is.
+  
+        PREFIX rdf: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX vrank: <http://purl.org/voc/vrank#> 
+        PREFIX wdd: <http://www.wikidata.org/prop/direct/>
+        SELECT DISTINCT ?o ?l ?pageRank 
+        WHERE {
+            <ENTITY> ?p ?o . 
+                FILTER (?p != rdf:type && ?p != wdd:P31 
+                && ?p != wdd:P735 && wdd:P21> 
+                && ?p != wdd:P972 && wdd:P421> 
+                && ?p != wdd:P1343 ) 
+            ?o rdfs:label ?l . 
+                FILTER STRENDS(lang(?l), "LANG") . 
+            graph <http://wikidata.com/pageRank> { 
+                ?o vrank:pagerank ?pageRank . 
+            }
+        }
+        ORDER BY DESC (?pageRank) LIMIT TOPK 
+        
+- implement getQuery2(), this method returns a query. It returns, given two resource ENTITY and OBJECT, the label of the property between them in the language LANG. For Wikidata we use the following query:
+           
+        PREFIX rdf: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX vrank:<http://purl.org/voc/vrank#>
+        SELECT ?p ?l 
+        WHERE {
+            <ENTITY> ?p <OBJECT> . 
+            OPTIONAL { 
+                ?o <http://wikiba.se/ontology-beta#directClaim> ?p . 
+                ?o rdfs:label ?l . 
+                FILTER regex(lang(?l), "LANG", "i")
+        }}
+        ORDER BY asc(?p) LIMIT 1
 
 Example of implementations can be found under:
 
