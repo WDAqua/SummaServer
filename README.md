@@ -4,7 +4,7 @@ The SummaServer provides a service for entity summarizatioimg over RDF graphs. F
 
 <img src="https://raw.githubusercontent.com/WDAqua/SummaServer/master/Example_Die_Zeit.jpeg" width="40%">
 
-It currently supports Wikidata, DBpedia, MusicBrainz, Dblp, Scigraph and Freebase.
+The following KB are currently supported: Wikidata, DBpedia, MusicBrainz, Dblp, Scigraph and Freebase.
 
 ## Setting up
 
