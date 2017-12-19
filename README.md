@@ -45,8 +45,8 @@ In the following we want to explain how to extend the service to new Knowledge B
 
 - You need to set up a triplestore containing the KB together with the PageRank scores expressed in the vRank vocabulary. The PageRank scores can be computed using the command line tool [PageRankRDF]{https://github.com/WDAqua/PageRankRDF}. We generally relay on SPARQL endpoints over HDT files like describe [here](https://github.com/rdfhdt/hdt-java/tree/master/hdt-fuseki).
 
-- Next you have to implement the following [abstract class](SummaServer/src/main/java/edu/kit/aifb/summarizer/Summarizer.java). This basically reduces to the following:
-   
+- Next you have to implement the following [abstract class](src/main/java/edu/kit/aifb/summarizer/Summarizer.java). This basically reduces to the following:
+
    - implements getName() indicating the name of the service, for example { return "wikidata"} will create a service under localhost:3031/wikidata/sum. 
    
    - implement getRepository() indicating the address of the SPARQL endpoint with the RDF KB and the corresponding PageRank scores
