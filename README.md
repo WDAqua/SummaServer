@@ -37,7 +37,7 @@ POST
         <http://www.wikidata.org/entity/Q157142> ; \
         <http://purl.org/voc/summa/topK> '5' ] ." -H "content-type: text/turtle" -H "accept: application/ld+json"           localhost:3031/wikidata/sum
         
-The response is encoded using the vRank vocabulary described at ?????
+The response is encoded using the SUMMA (http://purl.org/voc/summa) and vRank vocabularies (http://purl.org/voc/vrank).
 
 ## Extending to a new Knowledge Base (KB)
 
