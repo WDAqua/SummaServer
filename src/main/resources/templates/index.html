@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
+    <meta name="description" content=""></meta>
+    <meta name="author" content=""></meta>
+
+    <title>SummaServer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/scrolling-nav.css" rel="stylesheet"></link>
+    <link href="/css/summaClient.css" rel="stylesheet"></link>
+
+</head>
+
+<body id="page-top">
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">SummaServer</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#api">API</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#sourceCode">Source Code</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="bg-primary text-white">
+    <div class="container text-center">
+        <h1>Welcome to the SummaServer!</h1>
+        <p class="lead">A summarization service for RDF Knowledge Bases</p>
+    </div>
+</header>
+
+<section id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2>About</h2>
+                <p class="lead">You have a Knowledge Base and you want to retrive the top-k most relevent facts about an entity? Then you are at the right place! The SummaServer does the job for you. It currently supports the following KBs:</p>
+                <ul>
+                    <li th:each="k : ${kb}" th:text="${k}"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="api" class="bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2>API description</h2>
+                <p class="lead">The API supports both GET and POST requests.</p>
+                <div>
+                    The GET parameters are the following:
+
+                    <ul><li>query parameter <i>entity*</i>: the URI of the resource</li>
+                        <li>query parameter <i>topK</i>: the number of triples the summary should contain</li>
+                        <li>query parameter <i>maxHops</i> the maximum number of hops in the graph the result should contain.</li>
+                        <li>query parameter <i>language</i> defines the language of the output literals. We recommend to use <a href="http://www.ietf.org/rfc/rfc4646.txt">RFC 4646</a>.</li>
+                        <li>query parameter <i>fixedProperty</i>: the URI of a KBs predicate. If this parameter is present, the system focuses on statements that involve the given entity in combinatio with the given predicate. </li>
+                    </ul>
+                    The parameters marked with the star symbol (*) are mandatory.
+
+                    Here are some example requests:
+
+                    <ul>
+                        <li><a href="/wikidata/client?entity=http://www.wikidata.org/entity/Q76&amp;topK=10">/wikidata/sum?entity=http://www.wikidata.org/entity/Q76&amp;topK=10</a></li>
+                        <li><a href="/musicbrainz/client?entity=http://musicbrainz.org/artist/084308bd-1654-436f-ba03-df6697104e19#_&amp;topK=10">/musicbrainz/sum?entity=http://musicbrainz.org/artist/084308bd-1654-436f-ba03-df6697104e19#_&amp;topK=10</a></li>
+                        <li><a href="/dblp/client?entity=http://dblp.l3s.de/d2r/resource/publications/conf/i-semantics/DiefenbachLMM16&amp;topK=10">/dblp/sum?entity=http://dblp.l3s.de/d2r/resource/publications/conf/i-semantics/DiefenbachLMM16&amp;topK=10</a></li>
+                        <li><a href="/freebase/client?entity=http://rdf.freebase.com/ns/m.0g6s_h&amp;topK=10">/freebase/sum?entity=http://rdf.freebase.com/ns/m.0g6s_h&amp;topK=5</a></li>
+                        <li><a href="/scigraph/client?entity=http://scigraph.springernature.com/things/articles/01efb59a22edbfeb755dbfd78e4df963&amp;topK=10">scigraph/sum?entity=http://scigraph.springernature.com/things/articles/01efb59a22edbfeb755dbfd78e4df963&amp;topK=5</a></li>
+                    </ul>
+                </div>
+                <div>
+                    Moreover POST accepts request using the SUMMA (http://purl.org/voc/summa) and vRank (http://purl.org/voc/vrank) vocabularies. Here is an example:
+                    <div>
+                        <strong>JSON-LD, Turtle, RDF+XML, etc.</strong>
+                        (to copy&amp;paste for console)
+                        <div>
+                            curl -i -d "[ a &lt;http://purl.org/voc/summa/Summary&gt; ; \
+                            &lt;http://purl.org/voc/summa/entity&gt; \
+                            &lt;http://dbpedia.org/resource/Porsche&gt; ; \
+                            &lt;http://purl.org/voc/summa/topK&gt; '5'; \
+                            &lt;http://purl.org/voc/summa/maxHops&gt; '1'; \
+                            &lt;http://purl.org/voc/summa/language&gt; 'en'; \
+                            &lt;http://purl.org/voc/summa/fixedProperty&gt; \
+                            &lt;http://dbpedia.org/ontology/keyPerson&gt;; \
+                            &lt;http://purl.org/voc/summa/fixedProperty&gt; \
+                            &lt;http://dbpedia.org/ontology/owner&gt;  ] ." \
+                            -H "content-type: text/turtle" -H "accept: application/ld+json" <div th:text="${path}">/dbpedia/sum</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="sourceCode">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2>Source Code</h2>
+                <p class="lead"> The SummaServer is an open source project licenced under the permissive MIT licence. It is available at <a href="https://github.com/WDAqua/SummaServer">https://github.com/WDAqua/SummaServer</a>.
+                    It is possible to extend the SummaServer to support additional Knowledge Bases. You can find a detail instruction <a href="https://github.com/WDAqua/SummaServer/blob/master/README.md">here</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2>Contact us</h2>
+                <p class="lead">Do you need help? The best way is to open an issue on our <a href="https://github.com/WDAqua/SummaServer/issues">GitHub Repository</a>. If you are interested in the project, or you want to speak with us directly you can contact us via e-mail:</p>
+                <ul>
+                    <li> Dennis Diefenbach (dennis.diefenbach@univ-st-etienne.fr)</li>
+                    <li> Andreas Thalhammer (fenster.platz@web.de)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; SummaServer 2018</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom JavaScript for this theme -->
+<script src="/js/scrolling-nav.js"></script>
+<script src="/js/summaClient.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>SUMMA client</title>
+    <style>
+        span { background:#EEEEEE }
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="/css/summaClient.css" />
+    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="/js/summaClient.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var entity = encodeURI([[${entity}]]);
+        var language = [[${language}]];
+        var topK = [[${topK}]];
+        var server = [[${server}]];
+        var kb = [[${kb}]];
+        console.log(server+"/"+kb+"/sum");
+        $(document).ready(function() {
+            summa(entity, topK, language, null, "pf-summary", server+"/"+kb+"/sum");
+            qSUM(5, "en", null, "http://km.aifb.kit.edu/services/link/sum");
+        });
+        /*]]>*/
+    </script>
+</head>
+<body>
+<h1>[ SUMMA client ]</h1>
+
+<!-- here is the element that should contain a specific summary -->
+<div class="sum" id="pf-summary"></div>
+</body>
+</html>

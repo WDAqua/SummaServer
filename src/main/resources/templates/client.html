@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
+    <meta name="description" content=""></meta>
+    <meta name="author" content=""></meta>
+
+    <title>SummaClient</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"></link>
+
+    <!-- Custom styles for this template -->
+    <link href="/css/scrolling-nav.css" rel="stylesheet"></link>
+    <link href="/css/summaClient.css" rel="stylesheet"></link>
+
+    <link rel="stylesheet" type="text/css" href="/css/summaClient.css" />
+    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="/js/summaClient.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var entity = encodeURI([[${entity}]]);
+        var language = [[${language}]];
+        var topK = [[${topK}]];
+        var server = [[${server}]];
+        var kb = [[${kb}]];
+        console.log(server+"/"+kb+"/sum");
+        $(document).ready(function() {
+            summa(entity, topK, language, null, "pf-summary", server+"/"+kb+"/sum");
+            qSUM(5, "en", null, "http://km.aifb.kit.edu/services/link/sum");
+        });
+        /*]]>*/
+    </script>
+</head>
+
+<body id="page-top">
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">SummaClient</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#example">Example</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="#sourceCode">Source Code</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<header class="bg-primary text-white">
+    <div class="container text-center">
+        <h1>Welcome to the SummaClient!</h1>
+        <p class="lead">This is an example webpage embedding the SummaClient!</p>
+    </div>
+</header>
+
+<section id="example">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2>Example</h2>
+                <p class="lead">This is how the SummaClient looks like:</p>
+                <div class="sum" id="pf-summary"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="sourceCode"  class="bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2>Source Code</h2>
+                <p class="lead"> The SummaClient is an open source project licenced under the permissive MIT licence. It is available at <a href="https://github.com/athalhammer/summaClient">https://github.com/athalhammer/summaClient</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; SummaServer 2018</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+<!-- Bootstrap core JavaScript -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom JavaScript for this theme -->
+<script src="/js/scrolling-nav.js"></script>
+<script src="/js/summaClient.js"></script>
+
+</body>
+
+</html>

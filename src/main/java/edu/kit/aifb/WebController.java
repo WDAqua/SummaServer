@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -77,6 +78,59 @@ public class WebController {
     @Autowired
     public WebController(List<Summarizer> summerizer) {
         this.summerizer = summerizer;
+    }
+
+    //Mappings for HTML website
+
+    @RequestMapping(method = RequestMethod.GET, value="/")
+    public String homePage(org.springframework.ui.Model model){
+        model.addAttribute("path", PATH);
+        ArrayList<String> kb = new ArrayList<String>();
+        for (Summarizer s : summerizer) {
+            kb.add(s.getName());
+        }
+        model.addAttribute("kb", kb);
+        return "index";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value="/{kb}/sum")
+    public String description1(org.springframework.ui.Model model){
+        model.addAttribute("path", PATH);
+        ArrayList<String> kb = new ArrayList<String>();
+        for (Summarizer s : summerizer) {
+            kb.add(s.getName());
+        }
+        model.addAttribute("kb", kb);
+        return "index";
+    }
+
+
+    //Mapping for SummaServer API
+    @RequestMapping(method = RequestMethod.OPTIONS, value="{kb}/sum")
+    public ResponseEntity<?> getOptions() {
+        return ResponseEntity.ok().header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, OPTIONS").build();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value="{kb}/sum", params = "entity")
+    public ResponseEntity<?> summa(@PathVariable(value="kb") String kb,
+                                   @RequestParam(value="entity") String entity,
+                                   @RequestParam(value="topK", defaultValue = "5") Integer topK,
+                                   @RequestParam(value="maxHops", defaultValue = "1") Integer maxHops,
+                                   @RequestParam(value="fixedProperty", defaultValue ="") String fixedProperty,
+                                   @RequestParam(value="language", defaultValue = "en") String language,
+                                   @RequestHeader(value="Accept") String header,
+                                   @RequestHeader("Accept") String outputMime) {
+        RDFFormat outputFormat = Rio.getParserFormatForMIMEType(outputMime.split(",")[0]);
+        if (outputFormat == null) {
+            outputFormat = RDFFormat.TURTLE;
+        }
+        String [] fixedProperties = new String[0];
+        if (!fixedProperty.equals("")) {
+            fixedProperties = fixedProperty.split(",");
+        }
+        ResponseEntity<?> r = executeQuery(entity, topK, maxHops, fixedProperties, language, kb, outputFormat);
+        return ResponseEntity.ok(r.getBody());
+        //old Response.fromResponse(r).status(200).header("Location", null).build();
     }
 
     @RequestMapping(method = RequestMethod.POST, value="{kb}/sum")
@@ -138,32 +192,23 @@ public class WebController {
         return null;
     }
 
-
-    @RequestMapping(method = RequestMethod.OPTIONS, value="{kb}/sum")
-    public ResponseEntity<?> getOptions() {
-        return ResponseEntity.ok().header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, OPTIONS").build();
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value="{kb}/sum")
-    public ResponseEntity<?> summa(@PathVariable(value="kb") String kb,
-                        @RequestParam(value="entity") String entity,
-                        @RequestParam(value="topK", defaultValue = "5") Integer topK,
-                        @RequestParam(value="maxHops", defaultValue = "1") Integer maxHops,
-                        @RequestParam(value="fixedProperty", defaultValue ="") String fixedProperty,
-                        @RequestParam(value="language", defaultValue = "en") String language,
-                        @RequestHeader(value="Accept") String header,
-                        @RequestHeader("Accept") String outputMime) {
-        RDFFormat outputFormat = Rio.getParserFormatForMIMEType(outputMime.split(",")[0]);
-        if (outputFormat == null) {
-            outputFormat = RDFFormat.TURTLE;
-        }
-        String [] fixedProperties = new String[0];
-        if (!fixedProperty.equals("")) {
-            fixedProperties = fixedProperty.split(",");
-        }
-        ResponseEntity<?> r = executeQuery(entity, topK, maxHops, fixedProperties, language, kb, outputFormat);
-        return ResponseEntity.ok(r.getBody());
-        //old Response.fromResponse(r).status(200).header("Location", null).build();
+    //Mapping for the SummaClient
+    @RequestMapping(method = RequestMethod.GET, value="/{kb}/client")
+    public String client(@PathVariable(value="kb") String kb,
+                         @RequestParam(value="entity") String entity,
+                         @RequestParam(value="topK", defaultValue = "5") Integer topK,
+                         @RequestParam(value="maxHops", defaultValue = "1") Integer maxHops,
+                         @RequestParam(value="fixedProperty", defaultValue ="") String fixedProperty,
+                         @RequestParam(value="language", defaultValue = "en") String language,
+                         org.springframework.ui.Model model){
+        model.addAttribute("kb", kb);
+        model.addAttribute("entity", entity);
+        model.addAttribute("topK", topK);
+        model.addAttribute("maxHops", maxHops);
+        model.addAttribute("fixedProperty", fixedProperty);
+        model.addAttribute("language", language);
+        model.addAttribute("server", PATH);
+        return "client";
     }
 
     private ResponseEntity<?> executeQuery(String entity, Integer topK, Integer maxHops,
