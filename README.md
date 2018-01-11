@@ -39,6 +39,16 @@ POST
         
 The response is encoded using the SUMMA (http://purl.org/voc/summa) and vRank (http://purl.org/voc/vrank) vocabularies.
 
+## Demo
+
+A running demo can be found under:
+
+https://wdaqua-summa-server.univ-st-etienne.fr
+
+Moreover the summa server is used by the question answering system WDAqua-core0. A demo can be found at:
+
+www.wdaqua.eu/qa
+
 ## Extending to a new Knowledge Base (KB)
 
 In the following we want to explain how to extend the service to new Knowledge Bases. As a running example we use the conrete case of the Wikidata KB.
