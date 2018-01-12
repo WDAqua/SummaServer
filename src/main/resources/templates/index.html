@@ -87,29 +87,67 @@
 
                     Here are some example requests:
                     <ul>
-                        <li><a href="/wikidata/client?entity=http://www.wikidata.org/entity/Q76&amp;topK=10">/wikidata/sum?entity=http://www.wikidata.org/entity/Q76&amp;topK=10</a></li>
-                        <li><a href="/dblp/client?entity=http://dblp.l3s.de/d2r/resource/publications/conf/i-semantics/DiefenbachLMM16&amp;topK=10">/dblp/sum?entity=http://dblp.l3s.de/d2r/resource/publications/conf/i-semantics/DiefenbachLMM16&amp;topK=10</a></li>
-                        <li><a href="/freebase/client?entity=http://rdf.freebase.com/ns/m.0g6s_h&amp;topK=10">/freebase/sum?entity=http://rdf.freebase.com/ns/m.0g6s_h&amp;topK=5</a></li>
-                        <li><a href="/scigraph/client?entity=http://scigraph.springernature.com/things/articles/01efb59a22edbfeb755dbfd78e4df963&amp;topK=10">scigraph/sum?entity=http://scigraph.springernature.com/things/articles/01efb59a22edbfeb755dbfd78e4df963&amp;topK=5</a></li>
+                        <li> Over Wikidata, use curl (to copy&amp;paste for console):
+                            <a href="/wikidata/client?entity=http://www.wikidata.org/entity/Q76&amp;topK=10">
+                                <br />
+                                curl -G --data "entity=http://www.wikidata.org/entity/Q7186" \<br />
+                                --data "topK=10" \<br />
+                                --data "lang=en" \<br />
+                                https://wdaqua-summa-server.univ-st-etienne.fr/wikidata/sum<br />
+                                <br />
+                            </a>
+                        </li>
+                        <li> Over DBLP, use curl (to copy&amp;paste for console):
+                            <a href="/dblp/client?entity=http://dblp.l3s.de/d2r/resource/publications/conf/esws/ThalhammerR16&amp;topK=10">
+                                <br />
+                                curl -G --data "entity=http://dblp.l3s.de/d2r/resource/publications/conf/esws/ThalhammerR16" \<br />
+                                --data "topK=5" \<br />
+                                --data "lang=en" \<br />
+                                https://wdaqua-summa-server.univ-st-etienne.fr/dblp/sum<br />
+                                <br />
+                            </a>
+                        </li>
+                        <li> Over Freebase, use curl (to copy&amp;paste for console):
+                            <a href="/freebase/client?entity=http://rdf.freebase.com/ns/m.0g6s_h&amp;topK=10">
+                                <br />
+                                curl -G --data "entity=http://rdf.freebase.com/ns/m.0g6s_h" \<br />
+                                --data "topK=5" \<br />
+                                --data "lang=en" \<br />
+                                https://wdaqua-summa-server.univ-st-etienne.fr/freebase/sum<br />
+                                <br />
+                            </a>
+                        </li>
+                        <li> Over Scigraph, use curl (to copy&amp;paste for console):
+                            <a href="/scigraph/client?entity=http://scigraph.springernature.com/things/articles/01efb59a22edbfeb755dbfd78e4df963&amp;topK=10">
+                                <br />
+                                curl -G --data "entity=http://scigraph.springernature.com/things/articles/01efb59a22edbfeb755dbfd78e4df963" \<br />
+                                --data "topK=5" \<br />
+                                --data "lang=en" \<br />
+                                https://wdaqua-summa-server.univ-st-etienne.fr/scigraph/sum<br />
+                                <br />
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div>
-                    Moreover POST accepts request using the SUMMA (http://purl.org/voc/summa) and vRank (http://purl.org/voc/vrank) vocabularies. Here is an example:
+                    Moreover POST accepts request are allowed using the SUMMA (http://purl.org/voc/summa) and vRank (http://purl.org/voc/vrank) vocabularies in <strong>JSON-LD, Turtle, RDF+XML, etc.</strong>. Here is an example:
                     <div>
-                        <strong>JSON-LD, Turtle, RDF+XML, etc.</strong>
+
                         (to copy&amp;paste for console)
                         <div>
-                            curl -i -d "[ a &lt;http://purl.org/voc/summa/Summary&gt; ; \
-                            &lt;http://purl.org/voc/summa/entity&gt; \
-                            &lt;http://dbpedia.org/resource/Porsche&gt; ; \
-                            &lt;http://purl.org/voc/summa/topK&gt; '5'; \
-                            &lt;http://purl.org/voc/summa/maxHops&gt; '1'; \
-                            &lt;http://purl.org/voc/summa/language&gt; 'en'; \
-                            &lt;http://purl.org/voc/summa/fixedProperty&gt; \
-                            &lt;http://dbpedia.org/ontology/keyPerson&gt;; \
-                            &lt;http://purl.org/voc/summa/fixedProperty&gt; \
-                            &lt;http://dbpedia.org/ontology/owner&gt;  ] ." \
-                            -H "content-type: text/turtle" -H "accept: application/ld+json" <div th:text="${path}">/dbpedia/sum</div>
+                            <br />
+                            curl -i -d "[ a &lt;http://purl.org/voc/summa/Summary&gt; ; \<br />
+                            &lt;http://purl.org/voc/summa/entity&gt; \<br />
+                            &lt;http://dbpedia.org/resource/Porsche&gt; ; \<br />
+                            &lt;http://purl.org/voc/summa/topK&gt; '5'; \<br />
+                            &lt;http://purl.org/voc/summa/maxHops&gt; '1'; \<br />
+                            &lt;http://purl.org/voc/summa/language&gt; 'en'; \<br />
+                            &lt;http://purl.org/voc/summa/fixedProperty&gt; \<br />
+                            &lt;http://dbpedia.org/ontology/keyPerson&gt;; \<br />
+                            &lt;http://purl.org/voc/summa/fixedProperty&gt; \<br />
+                            &lt;http://dbpedia.org/ontology/owner&gt;  ] ." \<br />
+                            -H "content-type: text/turtle" -H "accept: application/ld+json" <div th:text="${path}">/dbpedia/sum</div><br />
+                            <br />
                         </div>
                     </div>
                 </div>
