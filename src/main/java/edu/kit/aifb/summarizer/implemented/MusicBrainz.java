@@ -24,10 +24,10 @@ public class MusicBrainz extends Summarizer {
 
 	public String getQuery1(){
 		return "PREFIX vrank:<http://purl.org/voc/vrank#> "
-                        + "SELECT ?o ?l WHERE { "
-                        + "{ SELECT DISTINCT ?o WHERE { "
+                        + "SELECT ?o ?l ?pageRank WHERE { "
+                        + "{ SELECT DISTINCT ?o ?pageRank WHERE { "
                         + "<ENTITY> ?p ?o . ?o vrank:hasRank/vrank:rankValue ?pageRank. "
-                        + "PREDICATES } "
+                        + "} "
                         + "ORDER BY DESC (?pageRank) LIMIT TOPK } "
                         + "OPTIONAL {?o <http://www.w3.org/2000/01/rdf-schema#label> ?l . } "
                         + "OPTIONAL {?o <http://xmlns.com/foaf/0.1/name> ?l } "
