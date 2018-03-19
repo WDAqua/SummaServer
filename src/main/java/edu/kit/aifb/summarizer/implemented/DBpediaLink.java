@@ -10,14 +10,14 @@ import edu.kit.aifb.summarizer.Summarizer;
  *
  */
 @Component
-public class DBpedia extends Summarizer {
+public class DBpediaLink extends Summarizer {
 
 	public String getName() {
-		return "dbpedia";
+		return "dbpedialink";
 	}
 
 	public String getRepository(){
-		return "https://wdaqua-hdt-endpoint.univ-st-etienne.fr/dbpedia_2016_10/sparql";
+		return "http://dbpedia.org/sparql";
 	}
 
 	public String getQuery0(){
@@ -29,6 +29,8 @@ public class DBpedia extends Summarizer {
 	public String getQuery1(){
 		return "PREFIX vrank:<http://purl.org/voc/vrank#> " +
 				"SELECT DISTINCT ?o ?l ?pageRank " +
+				"FROM <http://dbpedia.org> " +
+				"FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank> " +
 				"WHERE { " +
 				"<ENTITY> ?p ?o . " +
 				"PREDICATES " +
@@ -36,12 +38,12 @@ public class DBpedia extends Summarizer {
 				" ?p != <http://purl.org/dc/terms/subject> && " +
 				" ?p != <http://www.w3.org/2002/07/owl#sameAs> && " +
 				" ?p != <http://www.w3.org/2000/01/rdf-schema#seeAlso> &&" +
-				" ?p != <http://purl.org/linguistics/gold/hypernym> &&" +
+				" ?p != <http://purl.org/linguistics/gold/hypernym> && " +
 				" ?p != <http://dbpedia.org/ontology/wikiPageDisambiguates> ) " +
 				"?o <http://www.w3.org/2000/01/rdf-schema#label> ?l . " +
 				"FILTER STRENDS(lang(?l), \"LANG\") . " +
-				"graph <http://dbpedia.com/pageRank> { " +
-				"?o <http://purl.org/voc/vrank#pagerank> ?pageRank . " +
+				"graph <http://people.aifb.kit.edu/ath/#DBpedia_PageRank> { " +
+				"?o vrank:hasRank/vrank:rankValue ?pageRank . " +
 				"}} " +
 				"ORDER BY DESC (?pageRank) LIMIT TOPK ";
 	}
@@ -49,6 +51,8 @@ public class DBpedia extends Summarizer {
 	public String getQuery1b(){
 		return "PREFIX vrank:<http://purl.org/voc/vrank#> " +
 				"SELECT DISTINCT ?o ?l ?pageRank " +
+				"FROM <http://dbpedia.org> " +
+				"FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank> " +
 				"WHERE { " +
 				"?o ?p <ENTITY> . " +
 				"PREDICATES " +
@@ -60,8 +64,8 @@ public class DBpedia extends Summarizer {
 				" ?p != <http://dbpedia.org/ontology/wikiPageDisambiguates> ) " +
 				"?o <http://www.w3.org/2000/01/rdf-schema#label> ?l . " +
 				"FILTER STRENDS(lang(?l), \"LANG\") . " +
-				"graph <http://dbpedia.com/pageRank> { " +
-				"?o <http://purl.org/voc/vrank#pagerank> ?pageRank . " +
+				"graph <http://people.aifb.kit.edu/ath/#DBpedia_PageRank> { " +
+				"?o vrank:hasRank/vrank:rankValue ?pageRank . " +
 				"}} " +
 				"ORDER BY DESC (?pageRank) LIMIT TOPK ";
 	}
@@ -69,6 +73,7 @@ public class DBpedia extends Summarizer {
 	public String getQuery2() {
 		return "PREFIX vrank:<http://purl.org/voc/vrank#>"
 				+ "SELECT ?p ?l "
+				+ "FROM <http://dbpedia.org> "
 				+ "WHERE {"
 				+ "<ENTITY> ?p <OBJECT> . "
 				+ "OPTIONAL { "
@@ -79,6 +84,7 @@ public class DBpedia extends Summarizer {
 	public String getQuery2b(){
 		return "PREFIX vrank:<http://purl.org/voc/vrank#>"
 				+ "SELECT ?p ?l "
+				+ "FROM <http://dbpedia.org> "
 				+ "WHERE {"
 				+ "<OBJECT> ?p <ENTITY> . "
 				+ "OPTIONAL { "
