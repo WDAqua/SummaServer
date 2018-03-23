@@ -37,7 +37,17 @@ public class MusicBrainz extends Summarizer {
 	}
 
 	public String getQuery1b(){
-		return null;
+		return "PREFIX vrank:<http://purl.org/voc/vrank#> "
+				+ "SELECT ?o ?l ?pageRank WHERE { "
+				+ "{ SELECT DISTINCT ?o ?pageRank WHERE { "
+				+ "?o ?p <ENTITY> . ?o vrank:hasRank/vrank:rankValue ?pageRank. "
+				+ "} "
+				+ "ORDER BY DESC (?pageRank) LIMIT TOPK } "
+				+ "OPTIONAL {?o <http://www.w3.org/2000/01/rdf-schema#label> ?l . } "
+				+ "OPTIONAL {?o <http://xmlns.com/foaf/0.1/name> ?l } "
+				+ "OPTIONAL {?o <http://purl.org/dc/elements/1.1/title> ?l } "
+				+ "FILTER (lang(?l)=\"en\" || lang(?l)=\"\"). "
+				+ "}";
 	}
 
 	public String getQuery2() {
@@ -51,7 +61,13 @@ public class MusicBrainz extends Summarizer {
 	}
 
 	public String getQuery2b(){
-		return null;
+		return "PREFIX vrank:<http://purl.org/voc/vrank#>"
+				+ "SELECT ?p ?l ?rank "
+				+ "WHERE { "
+				+ "<OBJECT> ?p <ENTITY> . "
+				+ "<OBJECT> vrank:hasRank/vrank:rankValue ?rank . "
+				+ "OPTIONAL {?p <http://www.w3.org/2000/01/rdf-schema#label> ?l. } "
+				+ "} ORDER BY asc(?p)";
 	}
 
 }
