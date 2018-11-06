@@ -12,7 +12,7 @@ public class MusicBrainz extends Summarizer {
 	}
 
 	public String getRepository(){
-		return "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/musicbrainz/sparql";
+		return "http://qanswer-hdt-endpoint.univ-st-etienne.fr/musicbrainz/sparql";
 	}
 
 	public String getQuery0(){
@@ -25,19 +25,29 @@ public class MusicBrainz extends Summarizer {
 	public String getQuery1(){
 		return "PREFIX vrank:<http://purl.org/voc/vrank#> "
                         + "SELECT ?o ?l ?pageRank WHERE { "
-                        + "{ SELECT DISTINCT ?o ?pageRank WHERE { "
-                        + "<ENTITY> ?p ?o . ?o vrank:hasRank/vrank:rankValue ?pageRank. "
+                        + "<ENTITY> ?p ?o . "
+						+ " graph <http://pageRank.com> { "
+						+ "   ?o <http://purl.org/voc/vrank#pagerank> ?pageRank. "
                         + "} "
-                        + "ORDER BY DESC (?pageRank) LIMIT TOPK } "
                         + "OPTIONAL {?o <http://www.w3.org/2000/01/rdf-schema#label> ?l . } "
                         + "OPTIONAL {?o <http://xmlns.com/foaf/0.1/name> ?l } "
                         + "OPTIONAL {?o <http://purl.org/dc/elements/1.1/title> ?l } "
                         + "FILTER (lang(?l)=\"en\" || lang(?l)=\"\"). "
-                        + "}";
+                        + "} ORDER BY DESC (?pageRank) LIMIT TOPK ";
 	}
 
 	public String getQuery1b(){
-		return null;
+		return "PREFIX vrank:<http://purl.org/voc/vrank#> "
+				+ "SELECT ?o ?l ?pageRank WHERE { "
+				+ "<ENTITY> ?p ?o . "
+				+ " graph <http://pageRank.com> { "
+				+ "   ?o <http://purl.org/voc/vrank#pagerank> ?pageRank. "
+				+ "} "
+				+ "OPTIONAL {?o <http://www.w3.org/2000/01/rdf-schema#label> ?l . } "
+				+ "OPTIONAL {?o <http://xmlns.com/foaf/0.1/name> ?l } "
+				+ "OPTIONAL {?o <http://purl.org/dc/elements/1.1/title> ?l } "
+				+ "FILTER (lang(?l)=\"en\" || lang(?l)=\"\"). "
+				+ "} ORDER BY DESC (?pageRank) LIMIT TOPK ";
 	}
 
 	public String getQuery2() {
@@ -45,13 +55,17 @@ public class MusicBrainz extends Summarizer {
 				+ "SELECT ?p ?l ?rank "
 				+ "WHERE { "
 				+ "<ENTITY> ?p <OBJECT> . "
-				+ "<OBJECT> vrank:hasRank/vrank:rankValue ?rank . "
 				+ "OPTIONAL {?p <http://www.w3.org/2000/01/rdf-schema#label> ?l. } "
 				+ "} ORDER BY asc(?p)";
 	}
 
 	public String getQuery2b(){
-		return null;
+		return "PREFIX vrank:<http://purl.org/voc/vrank#>"
+				+ "SELECT ?p ?l ?rank "
+				+ "WHERE { "
+				+ "<OBJECT> ?p <ENTITY> . "
+				+ "OPTIONAL {?p <http://www.w3.org/2000/01/rdf-schema#label> ?l. } "
+				+ "} ORDER BY asc(?p)";
 	}
 
 }
