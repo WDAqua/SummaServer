@@ -12,7 +12,7 @@ public class Scigraph extends Summarizer {
 	}
 
 	public String getRepository(){
-		return "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/scigraph/sparql";
+		return "http://qanswer-hdt-endpoint.univ-st-etienne.fr/scigraph/sparql";
 	};
 
 	public String getQuery0(){

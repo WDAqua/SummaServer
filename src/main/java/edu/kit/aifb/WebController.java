@@ -104,6 +104,16 @@ public class WebController {
         return "index";
     }
 
+    @RequestMapping(method = RequestMethod.GET, value="/{kb}")
+    public String description2(org.springframework.ui.Model model){
+        model.addAttribute("path", PATH);
+        ArrayList<String> kb = new ArrayList<String>();
+        for (Summarizer s : summerizer) {
+            kb.add(s.getName());
+        }
+        model.addAttribute("kb", kb);
+        return "index";
+    }
 
     //Mapping for SummaServer API
     @RequestMapping(method = RequestMethod.OPTIONS, value="{kb}/sum")

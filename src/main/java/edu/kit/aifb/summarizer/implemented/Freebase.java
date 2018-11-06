@@ -17,7 +17,7 @@ public class Freebase extends Summarizer {
 	}
 
 	public String getRepository(){
-		return "https://wdaqua-hdt-endpoint.univ-st-etienne.fr/freebase_big/sparql";
+		return "https://qanswer-hdt-endpoint.univ-st-etienne.fr/freebase_big/sparql";
 	}
 
 	public String getQuery0(){

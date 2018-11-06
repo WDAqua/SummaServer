@@ -17,7 +17,7 @@ public class Wikidata extends Summarizer {
 	}
 
 	public String getRepository(){
-		return "https://wdaqua-hdt-endpoint.univ-st-etienne.fr/wikidata/sparql";
+		return "http://qanswer-hdt-endpoint.univ-st-etienne.fr/wikidata/sparql";
 	}
 
 	public String getQuery0(){
