@@ -1,6 +1,6 @@
 # SummaServer
 
-## Note: This repository is now mantained by QAnswer, it can be found under https://github.com/QAnswer/SummaServer.
+## Note: This repository is now mantained by QAnswer, it can be found [here](https://github.com/QAnswer/SummaServer).
 
 The SummaServer provides a service for entity summarizatioimg over RDF graphs. For example for the entity "Die Zeit", a German weekly newspaper, the summary over Wikidata is:
 
@@ -112,7 +112,7 @@ Example of implementations can be found under:
 https://github.com/WDAqua/SummaServer/tree/master/src/main/java/edu/kit/aifb/summarizer/implemented
    
 
-
+## Note: This repository is now mantained by QAnswer, it can be found [here](https://github.com/QAnswer/SummaServer).
 
 
 ---
